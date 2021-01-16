@@ -24,6 +24,7 @@ class dbStuff():
         '''
         conn = self.cnx
         conn.execute(self.table.insert(), [new_info])
+        conn.close()
 
     def show_table(self):
         
