@@ -71,7 +71,7 @@ with colt:
     options = ['Leisure','Friends','Politics','Health/Fitness','Travel (US/World)','Covid','Finance']
     options.sort()
     options += ['Other']
-    tag = st.selectbox("Category*", options=options)
+    tag = st.selectbox("Category*", options=options, index = 2)
 
 url = st.text_input("Website URL with more data (Optional)")
     
