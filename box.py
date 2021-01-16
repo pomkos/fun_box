@@ -35,19 +35,30 @@ class dbStuff():
         df.columns = resultset[0].keys()
         return df
     
-def sanity_checker(url: str):
+def sanity_checker(url: str, describe: str):
     '''
     Checks for proper formatting of user inputs
     '''
-    if 'https://' not in url:
-        st.error("Wait a second, this isn't a proper uniform resource locator! [1](https://en.wikipedia.org/wiki/URL)")
-        st.stop()
+    if url:
+        if 'https://' not in url:
+            st.error("Wait a second, this isn't a proper uniform resource locator! [1](https://en.wikipedia.org/wiki/URL)")
+            st.stop()
+    if describe:
+        if len(describe) >100:
+            st.error("That's too long! Please be more concise :)")
+            st.stop()
+            
+        result = all(c.isnumeric() or c.isalpha() for c in describe)
+        if result == False:
+            st.error("Illegal characters detected. Please try again, and tell Russ that 1 hack = 2 trolls!")
+            st.stop()
+            
         
 d = dbStuff()
 
 st.title("Suggestive  Box!")
 st.write("Pete wants a new data science project. What's something cool you would like to see in-depth analysis of?")
-st.write(" The more complicated the better.")
+st.write("The more complex the better.")
 
 colm, colt = st.beta_columns(2)
 
@@ -73,10 +84,12 @@ new_info = {
     'date':dt.datetime.now().date()
 }
 
+
 if submit:
     if url:
-        sanity_checker(url)
+        sanity_checker(url, describe)
     else:
+        sanity_checker(url=None, describe = describe)
         url = ''
     try:
         d.save_table(new_info)
