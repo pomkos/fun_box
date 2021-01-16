@@ -5,7 +5,7 @@ import string
 import random
 import re
     
-st.set_page_config(page_title='Suggestion Box')
+st.set_page_config(page_title='Suggestion Box', page_icon="📦")
 
 def random_char(y):
     return ''.join(random.choice(string.ascii_letters) for x in range(y))
@@ -72,11 +72,19 @@ def sanity_checker(description, category, url, date, rando_key):
         
 d = dbStuff()
 
-st.title("Suggestive  Box!")
-st.write("Pete wants a new data science project. What's something cool you would like to see in-depth analysis of?")
-st.write("The more complex the better.")
-
 ### GUI ###
+st.title("Suggestion Box!")
+st.write("Pete is looking for a new data science project! What's something cool you would like to see an in-depth analysis of?")
+st.write("The more challenging the better.")
+
+with st.beta_expander("More info"):
+    st.write("""Pete wants to analyze the heck out of something cool to include in his CV. Some of the stuff he's looking for:
+
+1. A cognitive (multifaceted question) or coding (ex: scrape multiple sites to gather data) __challenge__
+2. Good candidate for using __machine learning__ to predict things (ex: predict life expectancy based on various factors)
+3. Topic that is __fun__ to study 🎉
+    """)
+
 colm, colt = st.beta_columns(2)
 
 with colm:
