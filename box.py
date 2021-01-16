@@ -1,8 +1,14 @@
 import streamlit as st
 import sqlalchemy as sq
 import datetime as dt
+import string 
+import random
+import re
     
 st.set_page_config(page_title='Suggestion Box')
+
+def random_char(y):
+    return ''.join(random.choice(string.ascii_letters) for x in range(y))
 
 class dbStuff():
     def __init__(self):
@@ -35,26 +41,34 @@ class dbStuff():
         df.columns = resultset[0].keys()
         return df
     
-def sanity_checker(url: str, describe: str):
+def sanity_checker(description, category, url, date, rando_key):
     '''
     Checks for proper formatting of user inputs
     '''
-    if url:
-        if 'https://' not in url:
+    if rando_key in d.show_table()['rando_key']:
+        st.error("No spamming the submit button please :)") # doesnt work cuz streamlit refreshes each time. Right idea tho.
+        st.stop()
+    if url: # make sure its a proper url
+        if len(url) > 100:
+            st.error("The URL is too long! Please shorten using bitly or something.")
+            st.stop()
+        if ('http' not in url) or (re.search('\s', url)):
             st.error("Wait a second, this isn't a proper uniform resource locator! [1](https://en.wikipedia.org/wiki/URL)")
             st.stop()
-    if describe:
-        if len(describe) >100:
+    if description: # limit descriptions to alphanumerical and 100 chars max
+        if len(description) >100:
             st.error("That's too long! Please be more concise :)")
             st.stop()
-        elif len(describe) < 5:
+        elif len(description) < 5:
             st.error("That's too short! Please be more descriptive :)")
             st.stop()
-        result = all(c.isnumeric() or c.isalpha() or " " in c for c in describe)
+        result = all(c.isnumeric() or c.isalpha() or re.search('\s',c)  for c in description)
         if result == False:
             st.error("Illegal characters detected. Please try again, and tell Russ that 1 hack = 2 trolls!")
             st.stop()
-            
+    else:
+        st.error("Please write a brief description.")
+        st.stop()
         
 d = dbStuff()
 
@@ -74,30 +88,30 @@ with colt:
     tag = st.selectbox("Category*", options=options, index = 2)
 
 url = st.text_input("Website URL with more data (Optional)")
-    
-table_area = st.empty()
-table_area.table(d.show_table())
 
 submit = st.button("Submit")
 new_info = {
     'description':describe,
     'category':tag,
     'url':url,
-    'date':dt.datetime.now().date()
+    'date':dt.datetime.now(),
+    'rando_key': random_char(7)
 }
 
+table_area = st.empty()
+table_area.table(d.show_table().drop('rando_key',axis=1))
+
+df = d.show_table()
+
+### Spam Remover ###
+# df = df.iloc[0:3,:]
+# df.to_sql('suggestions',d.cnx, if_exists='replace',index=False)
+
 if submit:
-    if not describe:
-        st.error("Please write a brief description.")
-        st.stop()
-    if url:
-        sanity_checker(url, describe)
-    else:
-        sanity_checker(url=None, describe = describe)
-        url = ''
+    sanity_checker(**new_info)
     try:
-        d.save_table(new_info)
-        table_area.table(d.show_table())
+        d.save_table(new_info) # save info into db
+        table_area.table(d.show_table().drop('rando_key',axis=1)) # update the shown table
         st.success('Thank you!!')
         st.balloons()
     except:
