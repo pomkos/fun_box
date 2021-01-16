@@ -76,6 +76,7 @@ st.title("Suggestive  Box!")
 st.write("Pete wants a new data science project. What's something cool you would like to see in-depth analysis of?")
 st.write("The more complex the better.")
 
+### GUI ###
 colm, colt = st.beta_columns(2)
 
 with colm:
@@ -95,15 +96,14 @@ new_info = {
     'category':tag,
     'url':url,
     'date':dt.datetime.now(),
-    'rando_key': random_char(7)
+    'rando_key': random_char(7) # added to prevent spam, but doesnt work
 }
 
-table_area = st.empty()
-table_area.table(d.show_table().drop('rando_key',axis=1))
-
-df = d.show_table()
+table_area = st.empty() # take reserve empty space to update table
+table_area.table(d.show_table().drop('rando_key',axis=1)) # drop random key col
 
 ### Spam Remover ###
+# df = d.show_table()
 # df = df.iloc[0:3,:]
 # df.to_sql('suggestions',d.cnx, if_exists='replace',index=False)
 
