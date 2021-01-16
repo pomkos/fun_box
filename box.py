@@ -50,7 +50,7 @@ def sanity_checker(url: str, describe: str):
         elif len(describe) < 5:
             st.error("That's too short! Please be more descriptive :)")
             st.stop()
-        result = all(c.isnumeric() or c.isalpha() for c in describe)
+        result = all(c.isnumeric() or c.isalpha() or " " in c for c in describe)
         if result == False:
             st.error("Illegal characters detected. Please try again, and tell Russ that 1 hack = 2 trolls!")
             st.stop()
