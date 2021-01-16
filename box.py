@@ -86,8 +86,10 @@ new_info = {
     'date':dt.datetime.now().date()
 }
 
-
 if submit:
+    if not describe:
+        st.error("Please write a brief description.")
+        st.stop()
     if url:
         sanity_checker(url, describe)
     else:
