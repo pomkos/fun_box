@@ -22,7 +22,6 @@ class dbStuff():
         '''
         Saves information to database
         '''
-        import datetime as dt
         conn = self.cnx
         conn.execute(self.table.insert(), [new_info])
 
