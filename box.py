@@ -24,7 +24,6 @@ class dbStuff():
         '''
         conn = self.cnx
         conn.execute(self.table.insert(), [new_info])
-        conn.close()
 
     def show_table(self):
         
@@ -61,9 +60,6 @@ with colt:
     tag = st.selectbox("Category*", options=options)
 
 url = st.text_input("Website URL with more data (Optional)")
-
-if not url:
-    url = ''
     
 table_area = st.empty()
 table_area.table(d.show_table())
@@ -77,7 +73,10 @@ new_info = {
 }
 
 if submit:
-    sanity_checker(url)
+    if url:
+        sanity_checker(url)
+    else:
+        url = ''
     try:
         d.save_table(new_info)
         table_area.table(d.show_table())
