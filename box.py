@@ -46,7 +46,8 @@ def sanity_checker(url: str):
 d = dbStuff()
 
 st.title("Suggestive  Box!")
-st.write("What's something cool you would like to see in-depth analysis of?")
+st.write("Pete wants a new data science project. What's something cool you would like to see in-depth analysis of?")
+st.write(" The more complicated the better.")
 
 colm, colt = st.beta_columns(2)
 
