@@ -10,7 +10,7 @@ class dbStuff():
         Initialize the sqlite database
         '''
         # initialize engine
-        engine = sq.create_engine(f'sqlite:///data/box.db')
+        engine = sq.create_engine(f'sqlite:///data/fun_box.db')
         cnx = engine.connect()
         meta = sq.MetaData()
         meta.reflect(bind=engine)
