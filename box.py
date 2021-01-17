@@ -107,20 +107,21 @@ new_info = {
     'rando_key': random_char(7) # added to prevent spam, but doesnt work
 }
 
+success = st.empty()
 table_area = st.empty() # take reserve empty space to update table
 table_area.table(d.show_table().drop('rando_key',axis=1)) # drop random key col
 
 ### Spam Remover ###
 # df = d.show_table()
-# df = df.iloc[0:3,:]
+# df = df.iloc[0:8,:]
 # df.to_sql('suggestions',d.cnx, if_exists='replace',index=False)
 
 if submit:
     sanity_checker(**new_info)
     try:
         d.save_table(new_info) # save info into db
+        success.success('Thank you!!')
         table_area.table(d.show_table().drop('rando_key',axis=1)) # update the shown table
-        st.success('Thank you!!')
         st.balloons()
     except:
         st.error('Something bad happened, tell Pete quick!!')
