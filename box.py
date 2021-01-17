@@ -62,7 +62,7 @@ def sanity_checker(description, category, url, date, rando_key):
         elif len(description) < 5:
             st.error("That's too short! Please be more descriptive :)")
             st.stop()
-        result = all(c.isnumeric() or c.isalpha() or re.search('\s',c)  for c in description)
+        result = all(c.isnumeric() or c.isalpha() or re.search('\s',c) or re.search('\.',c) or re.search('\,',c) for c in description)
         if result == False:
             st.error("Illegal characters detected. Please try again, and tell Russ that 1 hack = 2 trolls!")
             st.stop()
